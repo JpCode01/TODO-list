@@ -1,0 +1,22 @@
+[ {
+  "categoria" : "teste",
+  "dataTermino" : "2026-08-15",
+  "descricao" : "tarefa nova",
+  "nome" : "Tarefa 2",
+  "prioridade" : 5,
+  "status" : "TODO"
+}, {
+  "categoria" : "teste1",
+  "dataTermino" : "2026-08-15",
+  "descricao" : "Tarefa nova",
+  "nome" : "Tarefa 3",
+  "prioridade" : 4,
+  "status" : "DOING"
+}, {
+  "categoria" : "teste1",
+  "dataTermino" : "2026-08-15",
+  "descricao" : "Tarefa nova",
+  "nome" : "Tarefa 4",
+  "prioridade" : 4,
+  "status" : "DOING"
+} ]
