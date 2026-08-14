@@ -8,6 +8,8 @@ Cada tarefa possui: nome, descrição, data de término, nível de prioridade (1
 
 A aplicação roda via terminal e permite criar, listar, atualizar e remover tarefas, além de listá-las por categoria, prioridade ou status. Sempre que uma nova tarefa é adicionada, a lista é reordenada com base na prioridade, mantendo a tarefa na posição ideal.
 
+Também é possível definir um alarme para a tarefa, com quantos dias de antecedência ele deve ser acionado. A aplicação verifica automaticamente a data atual em relação ao período definido e exibe um aviso quando a tarefa estiver próxima do vencimento.
+
 ## Tecnologias utilizadas
 
 - **Java**
@@ -20,7 +22,7 @@ A aplicação roda via terminal e permite criar, listar, atualizar e remover tar
 O projeto não usa nenhum framework, mas foi organizado em pacotes para separar as responsabilidades, buscando simular algo próximo de uma API service:
 
 - `model` - contém a entidade `Tarefa` e o enum `Status`
-- `service` - `TarefaService`, com as regras de negócio (inserir, listar, atualizar, remover, reordenar por prioridade)
+- `service` - `TarefaService`, com as regras de negócio (inserir, listar, atualizar, remover, reordenar por prioridade, verificar alarmes)
 - `validation` - `ValidationTarefa`, responsável por validar os dados informados pelo usuário
 - `view` - `Menu`, responsável por exibir as opções no terminal e tratar a interação com o usuário
 - `Main` - ponto de entrada da aplicação
