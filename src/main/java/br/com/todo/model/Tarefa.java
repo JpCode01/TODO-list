@@ -11,6 +11,11 @@ public class Tarefa {
     private int prioridade;
     private String categoria;
     private Status status;
+    private boolean alarmeAtivo;
+    private int antecedenciaDias;
+
+    public Tarefa() {
+    }
 
     public Tarefa(String nome, String descricao, LocalDate dataTermino, int prioridade, String categoria, Status status) {
         this.nome = nome;
@@ -45,21 +50,14 @@ public class Tarefa {
         return status;
     }
 
-    public Tarefa() {
+    public boolean isAlarmeAtivo() {
+        return alarmeAtivo;
     }
 
-    @Override
-    public String toString() {
-        return "Tarefa{" +
-                "nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", prioridade=" + prioridade +
-                ", categoria='" + categoria + '\'' +
-                ", dataTermino=" + dataTermino +
-                ", status=" + status +
-                '}';
-
+    public int getAntecedenciaDias() {
+        return antecedenciaDias;
     }
+
 
     public void setNome(String nome) {
         this.nome = nome;
@@ -84,4 +82,28 @@ public class Tarefa {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public void setAlarmeAtivo(boolean alarmeAtivo) {
+        this.alarmeAtivo = alarmeAtivo;
+    }
+
+    public void setAntecedenciaDias(int antecedenciaDias) {
+        this.antecedenciaDias = antecedenciaDias;
+    }
+
+    @Override
+    public String toString() {
+        return "Tarefa{" +
+                "nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", prioridade=" + prioridade +
+                ", categoria='" + categoria + '\'' +
+                ", dataTermino=" + dataTermino +
+                ", status=" + status +
+                ", alarmeAtivo=" + alarmeAtivo +
+                ", antecedenciaDias=" + antecedenciaDias +
+                '}';
+
+    }
+
 }

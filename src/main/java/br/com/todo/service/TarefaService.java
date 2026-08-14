@@ -63,8 +63,30 @@ public class TarefaService {
                     break;
                 }
             }
-            Tarefa tarefa = new Tarefa(nome, descricao, LocalDate.parse(dataTermino), prioridade, categoria, Status.valueOf(status));
+            System.out.println("Deseja ativar o alarme? (s/n)");
+            String respostaAlarme = scanner.nextLine();
 
+            boolean alarmeAtivo = respostaAlarme.equalsIgnoreCase("s");
+
+            int antecedenciaDias = 0;
+
+            if (alarmeAtivo) {
+                while (true) {
+                    System.out.println("Quantos dias antes deseja ser avisado?");
+                    antecedenciaDias = scanner.nextInt();
+
+                    if (antecedenciaDias < 0) {
+                        System.out.println("A antecedência não pode ser negativa.");
+                    } else {
+                        break;
+                    }
+                }
+
+                scanner.nextLine();
+            }
+            Tarefa tarefa = new Tarefa(nome, descricao, LocalDate.parse(dataTermino), prioridade, categoria, Status.valueOf(status));
+            tarefa.setAlarmeAtivo(alarmeAtivo);
+            tarefa.setAntecedenciaDias(antecedenciaDias);
             List<Tarefa> tarefas = carregarTarefa();
             tarefas.add(tarefa);
             rebalancearPrioridades(tarefas);
@@ -135,7 +157,7 @@ public class TarefaService {
                 System.out.println("Nova categoria:");
                 String novaCategoria = scanner.nextLine();
                 if (!novaCategoria.equals("")) {
-                    tarefa.setCategoria(scanner.nextLine());
+                    tarefa.setCategoria(novaCategoria);
                 }
 
                 while (true) {
@@ -163,6 +185,31 @@ public class TarefaService {
                     } else {
                         break;
                     }
+                }
+
+                System.out.println("Deseja manter o alarme atual? (s/n)");
+                String respostaAlarme = scanner.nextLine();
+
+                if (respostaAlarme.equalsIgnoreCase("s")) {
+                    tarefa.setAlarmeAtivo(true);
+
+                    while (true) {
+                        System.out.println("Quantos dias antes deseja ser avisado?");
+                        int antecedenciaDias = scanner.nextInt();
+
+                        if (antecedenciaDias < 0) {
+                            System.out.println("A antecedência não pode ser negativa.");
+                        } else {
+                            tarefa.setAntecedenciaDias(antecedenciaDias);
+                            break;
+                        }
+                    }
+
+                    scanner.nextLine();
+
+                } else {
+                    tarefa.setAlarmeAtivo(false);
+                    tarefa.setAntecedenciaDias(0);
                 }
                 rebalancearPrioridades(tarefas);
 
@@ -217,5 +264,31 @@ public class TarefaService {
         tarefas.stream()
                 .filter(t -> t.getStatus() == Status.valueOf(status.toUpperCase()))
                 .forEach(System.out::println);
+    }
+
+    public void verificarAlarmes() throws IOException {
+        List<Tarefa> tarefas = carregarTarefa();
+
+        LocalDate hoje = LocalDate.now();
+
+        for (Tarefa tarefa : tarefas) {
+
+            if (!tarefa.isAlarmeAtivo()) {
+                continue;
+            }
+
+            LocalDate dataAlarme =
+                    tarefa.getDataTermino()
+                            .minusDays(tarefa.getAntecedenciaDias());
+
+            if (!hoje.isBefore(dataAlarme)
+                    && !hoje.isAfter(tarefa.getDataTermino())) {
+                System.out.println("ALARME DE TAREFA");
+                System.out.println("Nome: " + tarefa.getNome());
+                System.out.println("Vence em: " + tarefa.getDataTermino());
+                System.out.println("Status: " + tarefa.getStatus());
+                System.out.println("-------------------------------------");
+            }
+        }
     }
 }

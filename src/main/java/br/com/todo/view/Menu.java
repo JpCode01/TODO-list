@@ -1,6 +1,4 @@
 package br.com.todo.view;
-
-import br.com.todo.enums.Status;
 import br.com.todo.service.TarefaService;
 import br.com.todo.validation.ValidationTarefa;
 
@@ -12,7 +10,8 @@ public class Menu {
     private final TarefaService tarefaService = new TarefaService();
     private final ValidationTarefa validationTarefa = new ValidationTarefa();
     public void inicio() throws IOException {
-       while (true) {
+        while (true) {
+            tarefaService.verificarAlarmes();
             System.out.println("""
                     SEJA BEM VINDO AO TODO LIST, AQUI VOCE PODE CRIAR UMA LISTA DE 
                     TAREFAS E MODIFICAR SEU ESTADO ENTRE (TODO, DOING E DONE)
@@ -93,6 +92,5 @@ public class Menu {
                     break;
             }
         }
-
     }
 }
