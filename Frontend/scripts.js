@@ -47,25 +47,26 @@ function mostrarTarefas() {
     tasks.forEach(function(task) {
 
         document.getElementById("task-list").innerHTML += `
-            <li class="task">
+        <li class="task">
+            <input type="checkbox" value="${task.id}">
+            
+            <h3>Nome: ${task.titulo}</h3>
 
-                <h3>Nome: ${task.titulo}</h3>
+            <p>Descrição: ${task.descricao}</p>
 
-                <p>Descrição: ${task.descricao}</p>
+            <span class="task-status">
+                Status: ${task.status}
+            </span>
 
-                <span class="task-status">
-                    Status: ${task.status}
-                </span>
+            <button class="edit-button" onclick="editarTarefa(${task.id})">
+                Editar
+            </button>
 
-                <button class="edit-button" onclick="editarTarefa(${task.id})">
-                    Editar
-                </button>
+            <button class="remove-button" onclick="removerTarefa(${task.id})">
+                Remover
+            </button>
 
-                <button class="remove-button" onclick="removerTarefa(${task.id})">
-                    Remover
-                </button>
-
-            </li>
+        </li>
         `;
     });
 }
@@ -97,6 +98,31 @@ function editarTarefa(id) {
 
     idTarefaEditando = id;
     document.getElementById("send-button").textContent = "Atualizar tarefa";
+}
+
+document.getElementById("change-status-button").onclick = function() {
+
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    const novoStatus = document.getElementById("status-select").value;
+
+    checkboxes.forEach(function(checkbox) {
+
+        if (checkbox.checked) {
+
+            const task = tasks.find(function(task) {
+                return task.id == checkbox.value;
+            });
+
+            task.status = novoStatus;
+        }
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    mostrarTarefas();
 }
 
 mostrarTarefas();
