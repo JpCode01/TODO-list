@@ -42,15 +42,25 @@
 
         </form>
 
-        <section class="tasks-section">
+    <section class="tasks-section">
 
-            <h2>Tarefas</h2>
+        <h2>Tarefas</h2>
 
-            <div>
-                <ul id="task-list"></ul>
-            </div>
+        <select id="status-select">
+            <option value="TODO">TODO</option>
+            <option value="DOING">DOING</option>
+            <option value="DONE">DONE</option>
+        </select>
 
-        </section>
+        <button id="change-status-button">
+            Executar
+        </button>
+        
+        <div>
+            <ul id="task-list"></ul>
+        </div>
+
+    </section>
 
     </main>
 
