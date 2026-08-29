@@ -4,49 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>TODO List</title>
+    <title>TODO LIST</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
-        <h1>TODO List</h1>
-    </header>
+    <main class="container">
 
-    <main>
-        <section>
-            <h2>Nova tarefa</h2>
+        <h1>TODO LIST</h1>
 
-            <form id="task-form">
+        <form id="task-form" class="task-form">
 
-                <label for="title">Título</label>
-                <input type="text" id="title" required>
-                <br>
-                <label for="description">Descrição</label>
-                <textarea id="description" required></textarea>
-                <br>
-                <label for="status">Status</label>
-                <select id="status">
-                    <option value="TODO">TODO</option>
-                    <option value="DOING">DOING</option>
-                    <option value="DONE">DONE</option>
-                </select>
+            <input
+                type="text"
+                id="task-title"
+                placeholder="Digite o título da tarefa"
+                required
+            >
 
-                <button type="submit">Salvar tarefa</button>
+            <textarea
+                id="task-description"
+                placeholder="Digite a descrição da tarefa"
+                required
+            ></textarea>
 
-            </form>
-        </section>
+            <select id="task-status">
+                <option value="TODO">TODO</option>
+                <option value="DOING">DOING</option>
+                <option value="DONE">DONE</option>
+            </select>
 
-        <section>
+            <button type="button" id="send-button">
+                Adicionar tarefa
+            </button>
+
+        </form>
+
+        <section class="tasks-section">
+
             <h2>Tarefas</h2>
 
-            <div id="task-list">
-                <!-- JavaScript vai inserir as tarefas aqui -->
+            <div>
+                <ul id="task-list"></ul>
             </div>
+
         </section>
 
     </main>
-    <script src="script.js"></script>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
