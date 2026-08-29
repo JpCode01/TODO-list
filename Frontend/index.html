@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TODO List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>TODO List</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Nova tarefa</h2>
+
+            <form id="task-form">
+
+                <label for="title">Título</label>
+                <input type="text" id="title" required>
+                <br>
+                <label for="description">Descrição</label>
+                <textarea id="description" required></textarea>
+                <br>
+                <label for="status">Status</label>
+                <select id="status">
+                    <option value="TODO">TODO</option>
+                    <option value="DOING">DOING</option>
+                    <option value="DONE">DONE</option>
+                </select>
+
+                <button type="submit">Salvar tarefa</button>
+
+            </form>
+        </section>
+
+        <section>
+            <h2>Tarefas</h2>
+
+            <div id="task-list">
+                <!-- JavaScript vai inserir as tarefas aqui -->
+            </div>
+        </section>
+
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

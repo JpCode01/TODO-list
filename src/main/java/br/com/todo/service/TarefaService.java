@@ -50,7 +50,6 @@ public class TarefaService {
                 } else {
                     break;
                 }
-
             }
 
             String dataTermino;
@@ -85,11 +84,14 @@ public class TarefaService {
                 scanner.nextLine();
             }
             Tarefa tarefa = new Tarefa(nome, descricao, LocalDate.parse(dataTermino), prioridade, categoria, Status.valueOf(status));
+            
             tarefa.setAlarmeAtivo(alarmeAtivo);
             tarefa.setAntecedenciaDias(antecedenciaDias);
+            
             List<Tarefa> tarefas = carregarTarefa();
             tarefas.add(tarefa);
             rebalancearPrioridades(tarefas);
+            
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(arquivo, tarefas);
             System.out.println("Tarefa adicionada com sucesso!");
@@ -136,7 +138,6 @@ public class TarefaService {
                 System.out.println("Nova descrição:");
                 String novaDescricao = scanner.nextLine();
                 if (!novaDescricao.equals("")) {
-
                     tarefa.setDescricao(novaDescricao);
                 }
 
@@ -235,6 +236,7 @@ public class TarefaService {
             System.out.println("Tarefa não encontrada.");
         }
     }
+    
     public boolean temTarefaPorNome(String nome) throws IOException {
         List<Tarefa> tarefas = carregarTarefa();
         return tarefas.stream().anyMatch(tarefa -> tarefa.getNome().equalsIgnoreCase(nome));
