@@ -1,4 +1,5 @@
 let idTarefaEditando = null;
+
 document.getElementById("send-button").onclick = function() {
 
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -8,10 +9,11 @@ document.getElementById("send-button").onclick = function() {
             id: Date.now(),
             titulo: document.getElementById("task-title").value,
             descricao: document.getElementById("task-description").value,
+            dataTermino: document.getElementById("task-end-date").value,
+            prioridade: document.getElementById("task-priority").value,
+            categoria: document.getElementById("task-category").value,
             status: document.getElementById("task-status").value,
         };
-
-    
 
         tasks.push(task);
     } else {
@@ -21,22 +23,28 @@ document.getElementById("send-button").onclick = function() {
 
         task.titulo = document.getElementById("task-title").value;
         task.descricao = document.getElementById("task-description").value;
+        task.dataTermino = document.getElementById("task-end-date").value;
+        task.prioridade = document.getElementById("task-priority").value;
+        task.categoria = document.getElementById("task-category").value;
         task.status = document.getElementById("task-status").value;
 
         idTarefaEditando = null;
     }
-    
-
- 
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
     document.getElementById("task-title").value = "";
     document.getElementById("task-description").value = "";
+    document.getElementById("task-end-date").value = "";
+    document.getElementById("task-priority").value = "1";
+    document.getElementById("task-category").value = "";
     document.getElementById("task-status").value = "TODO";
+
     mostrarTarefas();
+
     document.getElementById("send-button").textContent = "Adicionar tarefa";
 }
+
 
 function mostrarTarefas() {
 
@@ -46,13 +54,29 @@ function mostrarTarefas() {
 
     tasks.forEach(function(task) {
 
+        let botaoRemover = "";
+
+        if (task.id !== idTarefaEditando) {
+            botaoRemover = `
+                <button class="remove-button" onclick="removerTarefa(${task.id})">
+                    Remover
+                </button>
+            `;
+        }
+
         document.getElementById("task-list").innerHTML += `
         <li class="task">
             <input type="checkbox" value="${task.id}">
-            
+
             <h3>Nome: ${task.titulo}</h3>
 
             <p>Descrição: ${task.descricao}</p>
+
+            <p>Data de término: ${task.dataTermino}</p>
+
+            <p>Prioridade: ${task.prioridade}</p>
+
+            <p>Categoria: ${task.categoria}</p>
 
             <span class="task-status">
                 Status: ${task.status}
@@ -62,19 +86,22 @@ function mostrarTarefas() {
                 Editar
             </button>
 
-            <button class="remove-button" onclick="removerTarefa(${task.id})">
-                Remover
-            </button>
+            ${botaoRemover}
 
         </li>
         `;
     });
 }
 
+
 function removerTarefa(id) {
 
+    if (id === idTarefaEditando) {
+        return;
+    }
+
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    
+
     const novasTasks = tasks.filter(function(task) {
         return task.id !== id;
     });
@@ -83,6 +110,7 @@ function removerTarefa(id) {
 
     mostrarTarefas();
 }
+
 
 function editarTarefa(id) {
 
@@ -94,11 +122,18 @@ function editarTarefa(id) {
 
     document.getElementById("task-title").value = task.titulo;
     document.getElementById("task-description").value = task.descricao;
+    document.getElementById("task-end-date").value = task.dataTermino;
+    document.getElementById("task-priority").value = task.prioridade;
+    document.getElementById("task-category").value = task.categoria;
     document.getElementById("task-status").value = task.status;
 
     idTarefaEditando = id;
+
     document.getElementById("send-button").textContent = "Atualizar tarefa";
+
+    mostrarTarefas();
 }
+
 
 document.getElementById("change-status-button").onclick = function() {
 
@@ -124,5 +159,6 @@ document.getElementById("change-status-button").onclick = function() {
 
     mostrarTarefas();
 }
+
 
 mostrarTarefas();
