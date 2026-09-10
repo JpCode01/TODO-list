@@ -50,25 +50,39 @@ Ao rodar a aplicação, o usuário tem as seguintes opções:
 
 Como continuação do projeto, foi desenvolvido um frontend utilizando **HTML, CSS e JavaScript**, conforme a proposta da trilha de JavaScript do Acelera ZG.
 
-O frontend foi desenvolvido separadamente na pasta `Frontend/` e, neste momento, funciona de forma independente do backend, utilizando `localStorage` para simular a persistência dos dados enquanto a comunicação entre frontend e backend ainda não foi abordada na trilha.
+O frontend foi desenvolvido separadamente na pasta `Frontend/` e, neste momento, funciona de forma independente do backend, utilizando `localStorage` para armazenar as tarefas enquanto a comunicação entre frontend e backend ainda não foi abordada na trilha.
 
 ### Funcionalidades
 
-O frontend implementa as operações básicas de um CRUD:
+O frontend implementa as principais operações de gerenciamento das tarefas:
 
-* **Criar tarefas** - permite informar título, descrição e status da tarefa.
-* **Listar tarefas** - exibe todas as tarefas cadastradas na página.
-* **Editar tarefas** - permite selecionar uma tarefa existente, carregar seus dados no mesmo formulário de criação e salvar as alterações.
-* **Remover tarefas** - permite excluir uma tarefa tanto da lista exibida quanto do `localStorage`.
+* **Criar tarefas** - permite informar nome, descrição, data de término, prioridade de 1 a 5, categoria e status da tarefa.
+* **Listar tarefas** - exibe todas as tarefas cadastradas na página com suas respectivas informações.
+* **Editar tarefas** - permite selecionar uma tarefa existente, carregar seus dados no formulário e salvar as alterações.
+* **Remover tarefas** - permite excluir uma tarefa da lista e do `localStorage`.
+* **Alterar status** - permite selecionar uma ou mais tarefas por meio de checkboxes e alterar o status delas simultaneamente.
+* **Bloqueio durante edição** - enquanto uma tarefa está sendo editada, a opção de removê-la fica indisponível, evitando conflitos entre as operações de edição e remoção.
 
-Cada tarefa recebe um identificador próprio para permitir sua identificação durante as operações de edição e remoção.
+Cada tarefa recebe um identificador próprio para permitir sua identificação durante as operações de edição, remoção e alteração de status.
+
+### Dados da tarefa
+
+Cada tarefa cadastrada no frontend possui os seguintes atributos:
+
+* **Nome** - nome da tarefa.
+* **Descrição** - descrição da tarefa.
+* **Data de término** - data definida para conclusão da tarefa.
+* **Prioridade** - nível de prioridade entre 1 e 5.
+* **Categoria** - categoria à qual a tarefa pertence.
+* **Status** - estado atual da tarefa, podendo ser TODO, DOING ou DONE.
+* **ID** - identificador utilizado para localizar a tarefa durante as operações.
 
 ### Tecnologias utilizadas no frontend
 
-* **HTML** - estrutura da página e formulário de tarefas
-* **CSS** - estilização e layout da aplicação
-* **JavaScript** - lógica de criação, listagem, edição e remoção das tarefas
-* **LocalStorage** - armazenamento temporário das tarefas no navegador
+* **HTML** - estrutura da página e formulário de tarefas.
+* **CSS** - estilização e layout da aplicação.
+* **JavaScript** - lógica de criação, listagem, edição, remoção e alteração de status das tarefas.
+* **LocalStorage** - armazenamento das tarefas no navegador.
 
 A comunicação com o backend será implementada posteriormente, conforme os conteúdos da trilha avançarem.
 
