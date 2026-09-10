@@ -30,6 +30,27 @@
                 required
             ></textarea>
 
+            <input
+                type="date"
+                id="task-end-date"
+                required
+            >
+
+            <select id="task-priority">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <input
+                type="text"
+                id="task-category"
+                placeholder="Digite a categoria"
+                required
+            >
+
             <select id="task-status">
                 <option value="TODO">TODO</option>
                 <option value="DOING">DOING</option>
@@ -55,7 +76,7 @@
         <button id="change-status-button">
             Executar
         </button>
-        
+
         <div>
             <ul id="task-list"></ul>
         </div>
