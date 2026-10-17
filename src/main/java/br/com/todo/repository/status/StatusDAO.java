@@ -17,22 +17,19 @@ public class StatusDAO implements StatusRepository {
     public StatusDAO(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
-   
+
     @Override
-    public Optional<Status> buscarPorNome(String nome) throws SQLException {
+    public Optional<Long> buscarIdPorNome(String nome) throws SQLException {
         String sql = """
-                SELECT id_status_tarefa,
-                nome
-                FROM status_tarefa
-                WHERE nome = ? 
-                """;
+            SELECT id_status_tarefa
+            FROM status_tarefa
+            WHERE nome = ?
+            """;
 
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        sql, PreparedStatement.RETURN_GENERATED_KEYS)
-                )
-        {
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
             statement.setString(1, nome);
 
             ResultSet resultSet = statement.executeQuery();
@@ -41,13 +38,7 @@ public class StatusDAO implements StatusRepository {
                 return Optional.empty();
             }
 
-            Status status = new Status(
-                    resultSet.getLong("id_status_tarefa"),
-                    resultSet.getString("nome")
-            );
-
-            return Optional.of(status);
-
+            return Optional.of(resultSet.getLong("id_status_tarefa"));
         }
     }
     

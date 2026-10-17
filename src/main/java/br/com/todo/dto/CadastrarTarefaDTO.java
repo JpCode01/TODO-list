@@ -1,16 +1,17 @@
 package br.com.todo.dto;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public record CadastrarTarefaDTO(
         String nome,
         String descricao,
-        LocalDate dataTermino,
+        Date dataTermino,
         int prioridade,
         String categoria,
         String status
 ) {
-    public CadastrarTarefaDTO(String nome, String descricao, LocalDate dataTermino, int prioridade, String categoria, String status) {
+
+    public CadastrarTarefaDTO(String nome, String descricao, Date dataTermino, int prioridade, String categoria, String status) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataTermino = dataTermino;

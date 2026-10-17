@@ -12,7 +12,7 @@ public interface TarefaRepostiory {
     
     Optional<Tarefa> buscarPorId(Long id) throws SQLException;
 
-    Tarefa atualizar(Tarefa tarefa) throws SQLException;
+    void atualizar(Tarefa tarefa) throws SQLException;
 
     void remover(Long id) throws SQLException;
 
@@ -22,5 +22,5 @@ public interface TarefaRepostiory {
 
     List<TarefaViewDTO> listarTarefasFazendo() throws SQLException;
 
-    List<TarefaViewDTO> listarTarafasFeitas() throws SQLException;
+    List<TarefaViewDTO> listarTarefasFeitas() throws SQLException;
 }
