@@ -1,18 +1,26 @@
 package br.com.todo.view;
 
+import br.com.todo.config.MenuConfig;
 import br.com.todo.controller.AlarmeController;
+import br.com.todo.factory.menu.MenuFactory;
 
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Menu {
     private final Scanner scanner = new Scanner(System.in);
-    MenuTarefa menuTarefa;
-    MenuStatus menuStatus;
-    MenuAlarme menuAlarme;
-    AlarmeController alarmeController;
+    private final MenuFactory menuFactory = new MenuFactory(scanner);
+
+    private final MenuConfig menuConfig = menuFactory.getMenuConfig();
+    private final AlarmeController alarmeController =
+            menuFactory.getControllerConfig().alarmeController;
+
+    private final MenuTarefa menuTarefa = menuConfig.menuTarefa;
+    private final MenuStatus menuStatus = menuConfig.menuStatus;
+    private final MenuAlarme menuAlarme = menuConfig.menuAlarme;
     
-    void inicio() {
+    public void inicio() {
+        dispararAlarmes();
         System.out.println("""
         SEJA BEM VINDO AO TODO LIST, AQUI VOCE PODE CRIAR UMA LISTA DE 
         TAREFAS E MODIFICAR SEU ESTADO ENTRE (TODO, DOING E DONE)
@@ -30,7 +38,7 @@ public class Menu {
             6 - ATUALIZAR TAREFA
             7 - REMOVER TAREFA
             8 - ATUALIZAR STATUS TAREFA
-            9 - CRIAR ALAME
+            9 - CRIAR ALARME
             10 - ATIVAR ALARME 
             11 - DESATIVAR ALARME
             
@@ -45,10 +53,10 @@ public class Menu {
                     System.out.println(menuTarefa.listarTarefas());
                     break;
                 case 3:
-                    menuTarefa.listarTarefasFazendo();
+                    menuTarefa.listarTarefasAFazer();
                     break;
                 case 4:
-                    menuTarefa.listarTarefasAFazer();
+                    menuTarefa.listarTarefasFazendo();
                     break;
                 case 5:
                     menuTarefa.listarTarefasFeitas();
@@ -84,8 +92,11 @@ public class Menu {
         }
     }
 
-    private void dispararAlarmes() throws SQLException {
-        System.out.println(alarmeController.listarAlarmes());
+    private void dispararAlarmes() {
+        try {
+            System.out.println(alarmeController.listarAlarmes());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }

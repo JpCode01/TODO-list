@@ -36,6 +36,7 @@ public class MenuTarefa {
 
     public void escolherTarefaParaAtualizar() {
         List<TarefaViewDTO> tarefas = listarTarefas();
+        System.out.println(tarefas);
         try {
             verificaSeHaTarefasDisponiveis(tarefas);
             Long idTarefaProcurada = solicitarId("Digite o ID da tarefa: ");
@@ -49,6 +50,8 @@ public class MenuTarefa {
 
     public void escolherTarefaParaRemover() {
         List<TarefaViewDTO> tarefas = listarTarefas();
+        System.out.println(listarTarefas());
+
         try {
             verificaSeHaTarefasDisponiveis(tarefas);
             Long idTarefaProcurada = solicitarId("Digite o ID da tarefa: ");
@@ -131,7 +134,7 @@ public class MenuTarefa {
             descricaoTarefa = tarefa.getDescricao();
         }
 
-        System.out.println("Data limite Tarefa: ");
+        System.out.println("Data limite Tarefa (dd/MM/yyyy): ");
         String dataLimiteTarefa = scanner.nextLine();
         Date dataTermino = tarefa.getDataTermino();
 
@@ -168,7 +171,7 @@ public class MenuTarefa {
                 dataTermino,
                 prioridade,
                 categoriaTarefa,
-                statusTarefa
+                statusTarefa.toUpperCase()
         );
     }
 
@@ -195,7 +198,7 @@ public class MenuTarefa {
         System.out.println("Descricao Tarefa: ");
         String descricaoTarefa = scanner.nextLine();
 
-        System.out.println("Data limite: ");
+        System.out.println("Data limite (dd/MM/yyyy): ");
         Date dataLimite = Date.valueOf(validationTarefa.validarData(scanner.nextLine(), scanner));
 
         System.out.println("Prioridade Tarefa: ");
@@ -213,7 +216,7 @@ public class MenuTarefa {
                 dataLimite,
                 prioridadeTarefa,
                 categoriaTarefa,
-                status
+                status.toUpperCase()
         );
     }
 

@@ -6,7 +6,6 @@ import br.com.todo.dto.TarefaViewDTO;
 import br.com.todo.exception.tarefa.SemTarefasDisponiveisException;
 import br.com.todo.exception.tarefa.TarefaNaoEncontradaException;
 import br.com.todo.model.Alarme;
-import br.com.todo.model.Tarefa;
 import br.com.todo.validation.ValidationAlarme;
 
 import java.sql.SQLException;
@@ -27,6 +26,7 @@ public class MenuAlarme {
     }
 
     public void escolherTarefaParaAlarme(List<TarefaViewDTO> tarefas) {
+        System.out.println(tarefas);
         try {
             verificaSeHaTarefasDisponiveis(tarefas);
             Long idTarefaProcurada = solicitarId("Digite o ID da tarefa: ");

@@ -56,7 +56,7 @@ public class TarefaDAO implements TarefaRepostiory {
     public Optional<Tarefa> buscarPorId(Long id) throws SQLException {
         String sql = """
                     SELECT id_tarefa, nome, descricao, data_termino,
-                    prioridade, categoria, id_satatus_tarefa
+                    prioridade, categoria, id_status_tarefa
                     FROM tarefa
                     WHERE id_tarefa = ?
                 """;
@@ -80,7 +80,7 @@ public class TarefaDAO implements TarefaRepostiory {
                     resultSet.getDate("data_termino"),
                     resultSet.getInt("prioridade"),
                     resultSet.getString("categoria"),
-                    resultSet.getLong("id_satatus_tarefa")
+                    resultSet.getLong("id_status_tarefa")
             );
             
             return Optional.of(tarefa);
@@ -97,7 +97,7 @@ public class TarefaDAO implements TarefaRepostiory {
                     prioridade = ?,
                     categoria = ?,
                     id_status_tarefa = ?
-                WHERE id = ?
+                WHERE id_tarefa = ?
                 """;
         
         try (
@@ -110,6 +110,7 @@ public class TarefaDAO implements TarefaRepostiory {
             statement.setInt(4, tarefa.getPrioridade());
             statement.setString(5, tarefa.getCategoria());
             statement.setLong(6, tarefa.getIdStatus());
+            statement.setLong(7, tarefa.getId());
 
             statement.executeUpdate();
         }
@@ -119,7 +120,7 @@ public class TarefaDAO implements TarefaRepostiory {
     public void remover(Long id) throws SQLException {
         String sql = """
                 DELETE FROM tarefa
-                WHERE id = ?
+                WHERE id_tarefa = ?
                 """;
 
         try (
@@ -136,7 +137,7 @@ public class TarefaDAO implements TarefaRepostiory {
     public List<TarefaViewDTO> listarTarefas() throws SQLException {
         String sql = """
             SELECT
-                t.id,
+                t.id_tarefa,
                 t.nome,
                 t.descricao,
                 t.data_termino,
@@ -180,17 +181,18 @@ public class TarefaDAO implements TarefaRepostiory {
     @Override
     public List<TarefaViewDTO> listarTarefasAFazer() throws SQLException {
         String sql = """
-            SELECT
-                t.id,
-                t.nome,
-                t.descricao,
-                t.data_termino,
-                t.prioridade,
-                t.categoria,
-                s.nome AS status
-            FROM tarefa t
-            JOIN status_tarefa s
-                ON t.id_status_tarefa = s.id_status_tarefa
+           SELECT
+               t.id_tarefa,
+               t.nome,
+               t.descricao,
+               t.data_termino,
+               t.prioridade,
+               t.categoria,
+               s.nome AS status
+           FROM tarefa t
+           JOIN status_tarefa s
+               ON t.id_status_tarefa = s.id_status_tarefa
+           WHERE s.nome = 'TODO';
             """;
 
         List<TarefaViewDTO> tarefas = new ArrayList<>();
@@ -225,16 +227,17 @@ public class TarefaDAO implements TarefaRepostiory {
     public List<TarefaViewDTO> listarTarefasFazendo() throws SQLException {
         String sql = """
             SELECT
-                t.id,
-                t.nome,
-                t.descricao,
-                t.data_termino,
-                t.prioridade,
-                t.categoria,
-                s.nome AS status
-            FROM tarefa t
-            JOIN status_tarefa s
-                ON t.id_status_tarefa = s.id_status_tarefa
+               t.id_tarefa,
+               t.nome,
+               t.descricao,
+               t.data_termino,
+               t.prioridade,
+               t.categoria,
+               s.nome AS status
+           FROM tarefa t
+           JOIN status_tarefa s
+               ON t.id_status_tarefa = s.id_status_tarefa
+           WHERE s.nome = 'DOING';
             """;
 
         List<TarefaViewDTO> tarefas = new ArrayList<>();
@@ -268,17 +271,18 @@ public class TarefaDAO implements TarefaRepostiory {
     @Override
     public List<TarefaViewDTO> listarTarefasFeitas() throws SQLException {
         String sql = """
-            SELECT
-                t.id,
-                t.nome,
-                t.descricao,
-                t.data_termino,
-                t.prioridade,
-                t.categoria,
-                s.nome AS status
-            FROM tarefa t
-            JOIN status_tarefa s
-                ON t.id_status_tarefa = s.id_status_tarefa
+           SELECT
+                   t.id_tarefa,
+                   t.nome,
+                   t.descricao,
+                   t.data_termino,
+                   t.prioridade,
+                   t.categoria,
+                   s.nome AS status
+               FROM tarefa t
+               JOIN status_tarefa s
+                   ON t.id_status_tarefa = s.id_status_tarefa
+               WHERE s.nome = 'DONE';
             """;
 
         List<TarefaViewDTO> tarefas = new ArrayList<>();

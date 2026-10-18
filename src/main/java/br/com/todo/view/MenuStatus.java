@@ -26,6 +26,7 @@ public class MenuStatus {
     }
 
     public void escolherTarefaParaAtualizarStatus(List<TarefaViewDTO> tarefas) {
+        System.out.println(tarefas);
         try {
             verificaSeHaTarefasDisponiveis(tarefas);
             Long idTarefaProcurada = solicitarId("Digite o ID da tarefa: ");

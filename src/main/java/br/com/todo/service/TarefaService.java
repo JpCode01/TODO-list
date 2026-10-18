@@ -23,8 +23,8 @@ public class TarefaService {
     }
 
     public void criarTarefa(CadastrarTarefaDTO cadastrarTarefaDTO) throws SQLException {
-        Long idStatus = statusRepository.buscarIdPorNome(cadastrarTarefaDTO.nome())
-                .orElseThrow(() -> new StatusNaoEncontradoException(cadastrarTarefaDTO.nome()));
+        Long idStatus = statusRepository.buscarIdPorNome(cadastrarTarefaDTO.status())
+                .orElseThrow(() -> new StatusNaoEncontradoException(cadastrarTarefaDTO.status()));
         
         tarefaRepostiory.salvar(
                 new Tarefa(
@@ -63,8 +63,8 @@ public class TarefaService {
         tarefaRepostiory.buscarPorId(atualizarTarefaDTO.id())
                 .orElseThrow(() -> new TarefaNaoEncontradaException(atualizarTarefaDTO.id()));
 
-        Long idStatus = statusRepository.buscarIdPorNome(atualizarTarefaDTO.nome())
-                .orElseThrow(() -> new StatusNaoEncontradoException(atualizarTarefaDTO.nome()));
+        Long idStatus = statusRepository.buscarIdPorNome(atualizarTarefaDTO.status())
+                .orElseThrow(() -> new StatusNaoEncontradoException(atualizarTarefaDTO.status()));
 
         tarefaRepostiory.atualizar(
                 new Tarefa(
