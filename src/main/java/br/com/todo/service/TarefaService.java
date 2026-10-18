@@ -1,296 +1,92 @@
 package br.com.todo.service;
 
-
-import br.com.todo.enums.Status;
+import br.com.todo.dto.AtualizarTarefaDTO;
+import br.com.todo.dto.CadastrarTarefaDTO;
+import br.com.todo.dto.TarefaViewDTO;
+import br.com.todo.exception.status.StatusNaoEncontradoException;
+import br.com.todo.exception.tarefa.TarefaNaoEncontradaException;
 import br.com.todo.model.Tarefa;
-import br.com.todo.validation.ValidationTarefa;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
+import br.com.todo.repository.status.contrato.StatusRepository;
+import br.com.todo.repository.tarefa.contrato.TarefaRepostiory;
 
-import java.io.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
 
 public class TarefaService {
-    private final File arquivo = new File("tarefas.json");
-    private final ValidationTarefa validationTarefa = new ValidationTarefa();
-    private Scanner scanner =  new Scanner(System.in);
-    private ObjectMapper mapper = new ObjectMapper();
 
-    public void inserirTarefa() throws IOException {
-        System.out.println("Nome: ");
-        String nome = scanner.nextLine();
-        if(!temTarefaPorNome(nome)) {
-            
-            System.out.println("Descrição: ");
-            String descricao = scanner.nextLine();
-            int prioridade;
-            
-            while (true) {
-                System.out.println("Prioridade (1 a 5): ");
-                prioridade = scanner.nextInt();
-                if (!validationTarefa.prioridadeValida(prioridade)) {
-                    System.out.println("Opção inválida! Digite um número de 1 a 5");
-                } else {
-                    break;
-                }
-            }
-            scanner.nextLine();
+    private final TarefaRepostiory tarefaRepostiory;
+    private final StatusRepository statusRepository;
 
-            System.out.println("Categoria: ");
-            String categoria = scanner.nextLine();
-            String status;
-            while (true) {
-                System.out.println("Status: ");
-                status = scanner.nextLine().toUpperCase();
-                if (!validationTarefa.statusValido(status)) {
-                    System.out.println("Opção inválida! Digite uma opção entre TODO, DOING ou DONE");
-                } else {
-                    break;
-                }
-            }
-
-            String dataTermino;
-            while (true) {
-                System.out.println("Nova data de termino (aaaa-mm-dd):");
-                dataTermino = scanner.nextLine();
-                if (!validationTarefa.dataValida(dataTermino)) {
-                    System.out.println("Data inválida! use o formato aaaa-mm-dd");
-                } else {
-                    break;
-                }
-            }
-            System.out.println("Deseja ativar o alarme? (s/n)");
-            String respostaAlarme = scanner.nextLine();
-
-            boolean alarmeAtivo = respostaAlarme.equalsIgnoreCase("s");
-
-            int antecedenciaDias = 0;
-
-            if (alarmeAtivo) {
-                while (true) {
-                    System.out.println("Quantos dias antes deseja ser avisado?");
-                    antecedenciaDias = scanner.nextInt();
-
-                    if (antecedenciaDias < 0) {
-                        System.out.println("A antecedência não pode ser negativa.");
-                    } else {
-                        break;
-                    }
-                }
-
-                scanner.nextLine();
-            }
-            Tarefa tarefa = new Tarefa(nome, descricao, LocalDate.parse(dataTermino), prioridade, categoria, Status.valueOf(status));
-            
-            tarefa.setAlarmeAtivo(alarmeAtivo);
-            tarefa.setAntecedenciaDias(antecedenciaDias);
-            
-            List<Tarefa> tarefas = carregarTarefa();
-            tarefas.add(tarefa);
-            rebalancearPrioridades(tarefas);
-            
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(arquivo, tarefas);
-            System.out.println("Tarefa adicionada com sucesso!");
-        } else {
-            System.out.println("Já existe uma tarefa com esse nome!");
-        }
+    public TarefaService(TarefaRepostiory tarefaRepostiory, StatusRepository statusRepository) {
+        this.tarefaRepostiory = tarefaRepostiory;
+        this.statusRepository = statusRepository;
     }
-    
 
-    public List<Tarefa> carregarTarefa() throws IOException {
-        if (!arquivo.exists()) {
-            return new ArrayList<>();
-        }
-
-        return mapper.readValue(
-                arquivo,
-                new TypeReference<List<Tarefa>>() {
-                }
+    public void criarTarefa(CadastrarTarefaDTO cadastrarTarefaDTO) throws SQLException {
+        Long idStatus = statusRepository.buscarIdPorNome(cadastrarTarefaDTO.status())
+                .orElseThrow(() -> new StatusNaoEncontradoException(cadastrarTarefaDTO.status()));
+        
+        tarefaRepostiory.salvar(
+                new Tarefa(
+                    cadastrarTarefaDTO.nome(),
+                    cadastrarTarefaDTO.descricao(),
+                    cadastrarTarefaDTO.dataTermino(),
+                    cadastrarTarefaDTO.prioridade(),
+                    cadastrarTarefaDTO.categoria(),
+                    idStatus
+                )
         );
     }
 
-    public void listarTarefa() throws IOException {
-        List<Tarefa> tarefas = carregarTarefa();
-        for (Tarefa tarefa : tarefas) {
-            System.out.println(tarefa);
-        }
+    public Tarefa buscarTarefaPorId(Long id) throws SQLException {
+        return tarefaRepostiory.buscarPorId(id)
+                .orElseThrow(() -> new TarefaNaoEncontradaException(id));
     }
 
-    public String atualizarTarefa(String nome) throws IOException {
-        // Para contextualizar para você que tiver vendo isso kkkkkkkkk:
-        // Vázio -> Igual era antes
-        // Não vázio -> Modifica (Caso não haja validações)
-        List<Tarefa> tarefas = carregarTarefa();
-        for (Tarefa tarefa : tarefas) {
-            if (tarefa.getNome().equalsIgnoreCase(nome)) {
-                System.out.println("Novo nome:");
-                String novoNome = scanner.nextLine();
-                if(!novoNome.equalsIgnoreCase(nome) && !temTarefaPorNome(novoNome) && !novoNome.equals("")) {
-                    tarefa.setNome(novoNome);
-                } else if (temTarefaPorNome(novoNome)) {
-                    System.out.println("Tarefa já existente!");
-                }
-
-                System.out.println("Nova descrição:");
-                String novaDescricao = scanner.nextLine();
-                if (!novaDescricao.equals("")) {
-                    tarefa.setDescricao(novaDescricao);
-                }
-
-                while (true) {
-                    System.out.println("Nova prioridade: ");
-                    String prioridade = scanner.nextLine();
-                    if (!prioridade.equals("") && !validationTarefa.prioridadeValida(Integer.parseInt(prioridade))) {
-                        System.out.println("Opção inválida! Digite um número de 1 a 5");
-                    } else if (!prioridade.equals("")) {
-                        tarefa.setPrioridade(Integer.parseInt(prioridade));
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-                scanner.nextLine();
-
-                System.out.println("Nova categoria:");
-                String novaCategoria = scanner.nextLine();
-                if (!novaCategoria.equals("")) {
-                    tarefa.setCategoria(novaCategoria);
-                }
-
-                while (true) {
-                    System.out.println("Novo status: ");
-                    String status = scanner.nextLine();
-                    if (!status.equals("") && !validationTarefa.statusValido(status)) {
-                        System.out.println("Opção inválida! Digite uma opção entre TODO, DOING ou DONE");
-                    } else if (!status.equals("")) {
-                        tarefa.setStatus(Status.valueOf(status));
-                        break;
-                    } else {
-                        break;
-                    }
-
-                }
-
-                while (true) {
-                    System.out.println("Nova data de termino (aaaa-mm-dd):");
-                    String dataTermino = scanner.nextLine();
-                    if (!dataTermino.equals("") && !validationTarefa.dataValida(dataTermino)) {
-                        System.out.println("Data inválida! use o formato aaaa-mm-dd");
-                    } else if (!dataTermino.equals("")) {
-                        tarefa.setDataTermino(LocalDate.parse(dataTermino));
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-
-                System.out.println("Deseja manter o alarme atual? (s/n)");
-                String respostaAlarme = scanner.nextLine();
-
-                if (respostaAlarme.equalsIgnoreCase("s")) {
-                    tarefa.setAlarmeAtivo(true);
-
-                    while (true) {
-                        System.out.println("Quantos dias antes deseja ser avisado?");
-                        int antecedenciaDias = scanner.nextInt();
-
-                        if (antecedenciaDias < 0) {
-                            System.out.println("A antecedência não pode ser negativa.");
-                        } else {
-                            tarefa.setAntecedenciaDias(antecedenciaDias);
-                            break;
-                        }
-                    }
-
-                    scanner.nextLine();
-
-                } else {
-                    tarefa.setAlarmeAtivo(false);
-                    tarefa.setAntecedenciaDias(0);
-                }
-                rebalancearPrioridades(tarefas);
-
-                mapper.writerWithDefaultPrettyPrinter()
-                        .writeValue(arquivo, tarefas);
-
-                return "Tarefa atualizada.";
-            }
-        }
-        return "Essa tarefa não existe.";
-
+    public List<TarefaViewDTO> listarTarefas() throws SQLException {
+        return tarefaRepostiory.listarTarefas();
     }
 
-    public void removerTarefa(String nome) throws IOException {
-        List<Tarefa> tarefas = carregarTarefa();
-        boolean removida = tarefas.removeIf(tarefa -> tarefa.getNome().equalsIgnoreCase(nome));
-        if (removida) {
-            rebalancearPrioridades(tarefas);
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(arquivo, tarefas);
-            System.out.println("Tarefa removida.");
-        } else {
-            System.out.println("Tarefa não encontrada.");
-        }
-    }
-    
-    public boolean temTarefaPorNome(String nome) throws IOException {
-        List<Tarefa> tarefas = carregarTarefa();
-        return tarefas.stream().anyMatch(tarefa -> tarefa.getNome().equalsIgnoreCase(nome));
+    public List<TarefaViewDTO> listarTarefasAFazer() throws SQLException {
+        return tarefaRepostiory.listarTarefasAFazer();
     }
 
-    private void rebalancearPrioridades(List<Tarefa> tarefas) {
-        tarefas.sort((t1, t2) ->
-                Integer.compare(t2.getPrioridade(), t1.getPrioridade()));
+    public List<TarefaViewDTO> listarTarefasFazendo() throws SQLException {
+        return tarefaRepostiory.listarTarefasFazendo();
     }
 
-    public void listarPorPrioridade(int prioridade) throws IOException {
-        List<Tarefa> tarefas = carregarTarefa();
-        tarefas.stream()
-                .filter(t -> t.getPrioridade() == prioridade)
-                .forEach(System.out::println);
+    public List<TarefaViewDTO> listarTarefasFeitas() throws SQLException {
+        return tarefaRepostiory.listarTarefasFeitas();
     }
 
-    public void listarPorCategoria(String categoria) throws IOException {
-        List<Tarefa> tarefas = carregarTarefa();
-        tarefas.stream()
-                .filter(t -> t.getCategoria().equalsIgnoreCase(categoria))
-                .forEach(System.out::println);
+    public void atualizarTarefa(AtualizarTarefaDTO atualizarTarefaDTO) throws SQLException {
+        tarefaRepostiory.buscarPorId(atualizarTarefaDTO.id())
+                .orElseThrow(() -> new TarefaNaoEncontradaException(atualizarTarefaDTO.id()));
+
+        Long idStatus = statusRepository.buscarIdPorNome(atualizarTarefaDTO.status())
+                .orElseThrow(() -> new StatusNaoEncontradoException(atualizarTarefaDTO.status()));
+
+        tarefaRepostiory.atualizar(
+                new Tarefa(
+                        atualizarTarefaDTO.id(),
+                        atualizarTarefaDTO.nome(), 
+                        atualizarTarefaDTO.descricao(),
+                        atualizarTarefaDTO.dataTermino(),
+                        atualizarTarefaDTO.prioridade(),
+                        atualizarTarefaDTO.categoria(),
+                        idStatus
+                )
+        );
     }
 
-    public void listarPorStatus(String status) throws IOException {
-        List<Tarefa> tarefas = carregarTarefa();
-        tarefas.stream()
-                .filter(t -> t.getStatus() == Status.valueOf(status.toUpperCase()))
-                .forEach(System.out::println);
+    public void removerTarefa(Long id) throws SQLException {
+        tarefaRepostiory.buscarPorId(id)
+                .orElseThrow(() -> new TarefaNaoEncontradaException(id));
+
+        tarefaRepostiory.remover(id);
     }
 
-    public void verificarAlarmes() throws IOException {
-        List<Tarefa> tarefas = carregarTarefa();
-
-        LocalDate hoje = LocalDate.now();
-
-        for (Tarefa tarefa : tarefas) {
-
-            if (!tarefa.isAlarmeAtivo()) {
-                continue;
-            }
-
-            LocalDate dataAlarme =
-                    tarefa.getDataTermino()
-                            .minusDays(tarefa.getAntecedenciaDias());
-
-            if (!hoje.isBefore(dataAlarme)
-                    && !hoje.isAfter(tarefa.getDataTermino())) {
-                System.out.println("ALARME DE TAREFA");
-                System.out.println("Nome: " + tarefa.getNome());
-                System.out.println("Vence em: " + tarefa.getDataTermino());
-                System.out.println("Status: " + tarefa.getStatus());
-                System.out.println("-------------------------------------");
-            }
-        }
+    public void atualizarStatus(Long idTarefa, Long idStatusNovo) throws  SQLException {
+        tarefaRepostiory.atualizarStatus(idTarefa, idStatusNovo);
     }
 }
