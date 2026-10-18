@@ -23,4 +23,6 @@ public interface TarefaRepostiory {
     List<TarefaViewDTO> listarTarefasFazendo() throws SQLException;
 
     List<TarefaViewDTO> listarTarefasFeitas() throws SQLException;
+
+    void atualizarStatus(Long idTarefa, Long idStatusNovo) throws SQLException;
 }

@@ -85,4 +85,8 @@ public class TarefaService {
 
         tarefaRepostiory.remover(id);
     }
+
+    public void atualizarStatus(Long idTarefa, Long idStatusNovo) throws  SQLException {
+        tarefaRepostiory.atualizarStatus(idTarefa, idStatusNovo);
+    }
 }

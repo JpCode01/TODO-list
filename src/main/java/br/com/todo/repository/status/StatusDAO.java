@@ -1,12 +1,15 @@
 package br.com.todo.repository.status;
 
 import br.com.todo.factory.database.ConnectionFactory;
+import br.com.todo.model.Status;
 import br.com.todo.repository.status.contrato.StatusRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class StatusDAO implements StatusRepository {
@@ -63,6 +66,33 @@ public class StatusDAO implements StatusRepository {
 
             return Optional.of(resultSet.getString("nome"));
         }
+    }
+
+    @Override
+    public List<Status> listarStatus() throws SQLException {
+        String sql = """
+            SELECT id_status_tarefa, nome
+            FROM status_tarefa
+            """;
+
+        List<Status> statusList = new ArrayList<>();
+
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+            while (resultSet.next()) {
+                Status status = new Status(
+                        resultSet.getLong("id_status_tarefa"),
+                        resultSet.getString("nome")
+                );
+
+                statusList.add(status);
+            }
+        }
+
+        return statusList;
     }
 
 

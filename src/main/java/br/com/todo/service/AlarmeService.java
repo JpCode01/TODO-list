@@ -8,6 +8,7 @@ import br.com.todo.repository.alarme.contrato.AlarmeRepository;
 import br.com.todo.repository.tarefa.contrato.TarefaRepostiory;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class AlarmeService {
 
@@ -49,5 +50,9 @@ public class AlarmeService {
                 .orElseThrow(() -> new AlarmeNaoEncontradoException(idAlarme));
 
         alarmeRepository.ativar(idAlarme);
+    }
+
+    public List<Alarme> listarAlarmes() throws SQLException {
+        return alarmeRepository.listarAlarmes();
     }
 }

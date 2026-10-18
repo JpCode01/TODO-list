@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class AlarmeDAO implements AlarmeRepository {
@@ -136,5 +138,37 @@ public class AlarmeDAO implements AlarmeRepository {
         }
     }
 
+    @Override
+    public List<Alarme> listarAlarmes() throws SQLException {
+        String sql = """
+            SELECT
+                id_alarme,
+                id_tarefa,
+                ativo,
+                antecedencias_dias_para_disparo
+            FROM alarme
+            WHERE ativo = TRUE
+            """;
 
+        List<Alarme> alarmes = new ArrayList<>();
+
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+            while (resultSet.next()) {
+                Alarme alarme = new Alarme(
+                        resultSet.getLong("id_alarme"),
+                        resultSet.getBoolean("ativo"),
+                        resultSet.getInt("antecedencias_dias_para_disparo"),
+                        resultSet.getLong("id_tarefa")
+                );
+
+                alarmes.add(alarme);
+            }
+        }
+
+        return alarmes;
+    }
 }

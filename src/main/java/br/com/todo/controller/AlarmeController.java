@@ -4,6 +4,7 @@ import br.com.todo.model.Alarme;
 import br.com.todo.service.AlarmeService;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class AlarmeController {
 
@@ -27,5 +28,9 @@ public class AlarmeController {
 
     public void ativarAlarme(Long idAlarme) throws SQLException {
         this.alarmeService.ativarAlarme(idAlarme);
+    }
+
+    public List<Alarme> listarAlarmes() throws SQLException {
+        return this.alarmeService.listarAlarmes();
     }
 }

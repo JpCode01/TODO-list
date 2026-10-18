@@ -3,10 +3,11 @@ package br.com.todo.repository.alarme.contrato;
 import br.com.todo.model.Alarme;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public interface AlarmeRepository {
-    Alarme salvar(Alarme alarme) throws SQLException;
+    void salvar(Alarme alarme) throws SQLException;
     
     void atualizar(Alarme alarme) throws SQLException;
     
@@ -15,4 +16,6 @@ public interface AlarmeRepository {
     void desativar(Long id) throws SQLException;
 
     void ativar(Long id) throws SQLException;
+    
+    List<Alarme> listarAlarmes() throws SQLException;
 }

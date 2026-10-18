@@ -8,4 +8,19 @@ public class Status {
         this.id = id;
         this.nome = nome;
     }
+
+    @Override
+    public String toString() {
+        return String.format("""
+            ----------------------------------------------------------------
+
+            STATUS:
+            
+            ID: %d
+            NOME: %s
+            """,
+                id,
+                nome
+        );
+    }
 }

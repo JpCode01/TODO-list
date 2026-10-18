@@ -308,4 +308,23 @@ public class TarefaDAO implements TarefaRepostiory {
 
         return tarefas;
     }
+
+    @Override
+    public void atualizarStatus(Long idTarefa, Long idStatus) throws SQLException {
+        String sql = """
+            UPDATE tarefa
+            SET id_status_tarefa = ?
+            WHERE id_tarefa = ?
+            """;
+
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            statement.setLong(1, idStatus);
+            statement.setLong(2, idTarefa);
+
+            statement.executeUpdate();
+        }
+    }
 }

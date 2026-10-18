@@ -1,10 +1,16 @@
 package br.com.todo.view;
 
+import br.com.todo.controller.AlarmeController;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Menu {
     private final Scanner scanner = new Scanner(System.in);
     MenuTarefa menuTarefa;
+    MenuStatus menuStatus;
+    MenuAlarme menuAlarme;
+    AlarmeController alarmeController;
     
     void inicio() {
         System.out.println("""
@@ -23,6 +29,11 @@ public class Menu {
             5 - LISTAR TAREFAS JA FEITAS
             6 - ATUALIZAR TAREFA
             7 - REMOVER TAREFA
+            8 - ATUALIZAR STATUS TAREFA
+            9 - CRIAR ALAME
+            10 - ATIVAR ALARME 
+            11 - DESATIVAR ALARME
+            
             0 - SAIR
             
             ESCOLHA A OPCAO DESEJADA:""");
@@ -48,6 +59,12 @@ public class Menu {
                 case 7:
                     menuTarefa.escolherTarefaParaRemover();
                     break;
+                case 8:
+                    menuStatus.escolherTarefaParaAtualizarStatus(menuTarefa.listarTarefas());
+                    break;
+                case 9:
+                    menuAlarme.escolherTarefaParaAlarme(menuTarefa.listarTarefas());
+                    break;
                 case 0:
                     return;
             }
@@ -65,6 +82,10 @@ public class Menu {
                 System.out.println("Erro, Digite uma opção númerica inteira!");
             }
         }
+    }
+
+    private void dispararAlarmes() throws SQLException {
+        System.out.println(alarmeController.listarAlarmes());
     }
 
 }

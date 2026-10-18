@@ -49,7 +49,8 @@ public class TarefaController {
         tarefaService.removerTarefa(idTarefa);
     }
 
-    
 
-
+    public void atualizarStatus(Long idTarefa, Long idStatusNovo) throws SQLException {
+        tarefaService.atualizarStatus(idTarefa, idStatusNovo);
+    }
 }

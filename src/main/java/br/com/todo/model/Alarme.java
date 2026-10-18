@@ -23,4 +23,21 @@ public class Alarme {
         this.antecendenciaDiasParaDisparo = antecendenciaDiasParaDisparo;
         this.idTarefa = idTarefa;
     }
+
+    @Override
+    public String toString() {
+        return String.format("""
+            ----------------------------------------------------------------
+
+            ALARME:
+
+            ID: %s
+            Antecedência em dias para disparo: %d
+            ID da tarefa: %s
+            """,
+                id,
+                antecendenciaDiasParaDisparo,
+                idTarefa
+        );
+    }
 }
