@@ -21,7 +21,7 @@ public class AlarmeDAO implements AlarmeRepository {
     }
 
     @Override
-    public Alarme salvar(Alarme alarme) throws SQLException {
+    public void salvar(Alarme alarme) throws SQLException {
         String sql = """
                 INSERT INTO alarme
                     (id_tarefa,
@@ -47,8 +47,6 @@ public class AlarmeDAO implements AlarmeRepository {
             if (generatedKeys.next()) {
                 alarme.setId(generatedKeys.getLong(1));
             }
-
-            return alarme;
         }
     }
 
