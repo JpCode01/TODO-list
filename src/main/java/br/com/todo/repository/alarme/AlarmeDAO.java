@@ -139,14 +139,22 @@ public class AlarmeDAO implements AlarmeRepository {
     @Override
     public List<Alarme> listarAlarmes() throws SQLException {
         String sql = """
-            SELECT
-                id_alarme,
-                id_tarefa,
-                ativo,
-                antecedencias_dias_para_disparo
-            FROM alarme
-            WHERE ativo = TRUE
-            """;
+        SELECT
+            a.id_alarme,
+            a.id_tarefa,
+            a.ativo,
+            a.antecedencias_dias_para_disparo
+        FROM alarme a
+        JOIN tarefa t
+            ON t.id_tarefa = a.id_tarefa
+        JOIN status_tarefa s
+            ON s.id_status_tarefa = t.id_status_tarefa
+        WHERE a.ativo = TRUE
+            AND s.nome <> 'DONE'
+            AND CURRENT_DATE BETWEEN
+                t.data_termino - a.antecedencias_dias_para_disparo
+                AND t.data_termino
+        """;
 
         List<Alarme> alarmes = new ArrayList<>();
 

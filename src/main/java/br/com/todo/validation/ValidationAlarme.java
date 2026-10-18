@@ -13,6 +13,7 @@ public class ValidationAlarme {
                 if (dias < 0) {
                     throw new DiasNegativosException();
                 }
+                return dias;
             } catch (NumberFormatException e) {
                 System.out.println("Prioridade inválida! Digite um número inteiro.");
                 inputDias = scanner.nextLine();

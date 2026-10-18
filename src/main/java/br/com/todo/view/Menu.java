@@ -3,8 +3,10 @@ package br.com.todo.view;
 import br.com.todo.config.MenuConfig;
 import br.com.todo.controller.AlarmeController;
 import br.com.todo.factory.menu.MenuFactory;
+import br.com.todo.model.Alarme;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -20,7 +22,6 @@ public class Menu {
     private final MenuAlarme menuAlarme = menuConfig.menuAlarme;
     
     public void inicio() {
-        dispararAlarmes();
         System.out.println("""
         SEJA BEM VINDO AO TODO LIST, AQUI VOCE PODE CRIAR UMA LISTA DE 
         TAREFAS E MODIFICAR SEU ESTADO ENTRE (TODO, DOING E DONE)
@@ -29,6 +30,7 @@ public class Menu {
         """);
         
         while (true) {
+            dispararAlarmes();
             int escolha = capturarEscolha("""
             1 - ADICIONAR TAREFA
             2 - LISTAR TODAS AS TAREFAS
@@ -94,7 +96,11 @@ public class Menu {
 
     private void dispararAlarmes() {
         try {
-            System.out.println(alarmeController.listarAlarmes());
+            List<Alarme> alarmes = alarmeController.listarAlarmes();
+
+            if (!alarmes.isEmpty()) {
+                System.out.println(alarmes);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
