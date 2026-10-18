@@ -3,8 +3,8 @@ package br.com.todo.service;
 import br.com.todo.dto.AtualizarTarefaDTO;
 import br.com.todo.dto.CadastrarTarefaDTO;
 import br.com.todo.dto.TarefaViewDTO;
-import br.com.todo.exception.StatusNaoEncontradoException;
-import br.com.todo.exception.TarefaNaoEncontradaException;
+import br.com.todo.exception.status.StatusNaoEncontradoException;
+import br.com.todo.exception.tarefa.TarefaNaoEncontradaException;
 import br.com.todo.model.Tarefa;
 import br.com.todo.repository.status.contrato.StatusRepository;
 import br.com.todo.repository.tarefa.contrato.TarefaRepostiory;
@@ -36,6 +36,11 @@ public class TarefaService {
                     idStatus
                 )
         );
+    }
+
+    public Tarefa buscarTarefaPorId(Long id) throws SQLException {
+        return tarefaRepostiory.buscarPorId(id)
+                .orElseThrow(() -> new TarefaNaoEncontradaException(id));
     }
 
     public List<TarefaViewDTO> listarTarefas() throws SQLException {

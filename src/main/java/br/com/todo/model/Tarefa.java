@@ -1,7 +1,13 @@
 package br.com.todo.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.sql.Date;
 
+
+@Getter
+@Setter
 public class Tarefa {
     private Long id;
     private String nome;
@@ -30,35 +36,4 @@ public class Tarefa {
         this.idStatus = idStatus;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public Date getDataTermino() {
-        return dataTermino;
-    }
-
-    public int getPrioridade() {
-        return prioridade;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public Long getIdStatus() {
-        return idStatus;
-    }
 }

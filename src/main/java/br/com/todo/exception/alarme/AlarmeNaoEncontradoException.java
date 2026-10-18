@@ -1,4 +1,4 @@
-package br.com.todo.exception;
+package br.com.todo.exception.alarme;
 
 public class AlarmeNaoEncontradoException extends RuntimeException {
     public AlarmeNaoEncontradoException(Long idAlarme) {

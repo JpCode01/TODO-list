@@ -1,8 +1,8 @@
 package br.com.todo.service;
 
-import br.com.todo.exception.AlarmeDesativadoException;
-import br.com.todo.exception.AlarmeNaoEncontradoException;
-import br.com.todo.exception.TarefaNaoEncontradaException;
+import br.com.todo.exception.alarme.AlarmeDesativadoException;
+import br.com.todo.exception.alarme.AlarmeNaoEncontradoException;
+import br.com.todo.exception.tarefa.TarefaNaoEncontradaException;
 import br.com.todo.model.Alarme;
 import br.com.todo.repository.alarme.contrato.AlarmeRepository;
 import br.com.todo.repository.tarefa.contrato.TarefaRepostiory;

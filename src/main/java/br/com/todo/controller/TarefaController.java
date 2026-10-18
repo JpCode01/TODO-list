@@ -3,6 +3,7 @@ package br.com.todo.controller;
 import br.com.todo.dto.AtualizarTarefaDTO;
 import br.com.todo.dto.CadastrarTarefaDTO;
 import br.com.todo.dto.TarefaViewDTO;
+import br.com.todo.model.Tarefa;
 import br.com.todo.service.TarefaService;
 
 import java.sql.SQLException;
@@ -18,6 +19,10 @@ public class TarefaController {
 
     public void criarTarefa(CadastrarTarefaDTO cadastrarTarefaDTO) throws SQLException {
         tarefaService.criarTarefa(cadastrarTarefaDTO);
+    }
+
+    public Tarefa buscarTarefaPorId(Long idTarefa) throws SQLException {
+        return tarefaService.buscarTarefaPorId(idTarefa);
     }
 
     public void atualizarTarefa(AtualizarTarefaDTO atualizarTarefaDTO) throws SQLException {
@@ -38,6 +43,10 @@ public class TarefaController {
 
     public List<TarefaViewDTO> listarTarefasFeitas() throws SQLException {
         return tarefaService.listarTarefasFeitas();
+    }
+
+    public void removerTarefa(Long idTarefa) throws SQLException {
+        tarefaService.removerTarefa(idTarefa);
     }
 
     

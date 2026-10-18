@@ -1,4 +1,4 @@
-package br.com.todo.exception;
+package br.com.todo.exception.tarefa;
 
 public class TarefaNaoEncontradaException extends RuntimeException {
     public TarefaNaoEncontradaException(Long idTarefa) {

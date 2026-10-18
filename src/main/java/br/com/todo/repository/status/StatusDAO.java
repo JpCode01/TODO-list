@@ -1,7 +1,6 @@
 package br.com.todo.repository.status;
 
 import br.com.todo.factory.database.ConnectionFactory;
-import br.com.todo.model.Status;
 import br.com.todo.repository.status.contrato.StatusRepository;
 
 import java.sql.Connection;
@@ -41,6 +40,30 @@ public class StatusDAO implements StatusRepository {
             return Optional.of(resultSet.getLong("id_status_tarefa"));
         }
     }
-    
+
+    @Override
+    public Optional<String> buscarNomePorId(Long id) throws SQLException {
+        String sql = """
+            SELECT nome
+            FROM status_tarefa
+            WHERE id_status_tarefa = ?
+            """;
+
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            statement.setLong(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+
+            return Optional.of(resultSet.getString("nome"));
+        }
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package br.com.todo.exception;
+package br.com.todo.exception.alarme;
 
 public class AlarmeDesativadoException extends RuntimeException {
     public AlarmeDesativadoException() {
