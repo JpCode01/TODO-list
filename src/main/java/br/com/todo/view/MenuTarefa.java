@@ -21,12 +21,14 @@ public class MenuTarefa {
     private final TarefaController tarefaController;
     private final ValidationTarefa validationTarefa;
     private final StatusController statusController;
+    private final EntradaConsole entradaConsole;
 
-    public MenuTarefa(Scanner scanner, TarefaController tarefaController, ValidationTarefa validationTarefa, StatusController statusController) {
+    public MenuTarefa(Scanner scanner, TarefaController tarefaController, ValidationTarefa validationTarefa, StatusController statusController, EntradaConsole entradaConsole) {
         this.scanner = scanner;
         this.tarefaController = tarefaController;
         this.validationTarefa = validationTarefa;
         this.statusController = statusController;
+        this.entradaConsole = entradaConsole;
     }
 
     public void cadastrarTarefa() {
@@ -39,7 +41,7 @@ public class MenuTarefa {
         System.out.println(tarefas);
         try {
             verificaSeHaTarefasDisponiveis(tarefas);
-            Long idTarefaProcurada = solicitarId("Digite o ID da tarefa: ");
+            Long idTarefaProcurada = entradaConsole.solicitarId("Digite o ID da tarefa: ");
             Tarefa tarefaEncontrada = tarefaController.buscarTarefaPorId(idTarefaProcurada);
 
             atualizarTarefa(tarefaEncontrada);
@@ -54,7 +56,7 @@ public class MenuTarefa {
 
         try {
             verificaSeHaTarefasDisponiveis(tarefas);
-            Long idTarefaProcurada = solicitarId("Digite o ID da tarefa: ");
+            Long idTarefaProcurada = entradaConsole.solicitarId("Digite o ID da tarefa: ");
             Tarefa tarefaEncontrada = tarefaController.buscarTarefaPorId(idTarefaProcurada);
             
             removerTarefa(tarefaEncontrada.getId());
@@ -218,17 +220,5 @@ public class MenuTarefa {
                 categoriaTarefa,
                 status.toUpperCase()
         );
-    }
-
-    private Long solicitarId(String mensagem) {
-        while (true) {
-            System.out.println(mensagem);
-            String idEscolhido = scanner.nextLine();
-            try {
-                return Long.parseLong(idEscolhido);
-            } catch (NumberFormatException e) {
-                System.out.println("Erro, digite um ID númerico!");
-            }
-        }
     }
 }

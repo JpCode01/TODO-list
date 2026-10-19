@@ -41,9 +41,7 @@ public class Menu {
             7 - REMOVER TAREFA
             8 - ATUALIZAR STATUS TAREFA
             9 - CRIAR ALARME
-            10 - ATIVAR ALARME 
-            11 - DESATIVAR ALARME
-            
+        
             0 - SAIR
             
             ESCOLHA A OPCAO DESEJADA:""");
