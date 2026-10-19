@@ -22,23 +22,34 @@ function obterDadosFormulario() {
 function limparFormulario() {
     document.getElementById("task-title").value = "";
     document.getElementById("task-description").value = "";
+    document.getElementById("task-email").value = "";
     document.getElementById("task-end-date").value = "";
     document.getElementById("task-priority").value = "1";
     document.getElementById("task-category").value = "";
     document.getElementById("task-status").value = "TODO";
 }
 
-document.getElementById("send-button").onclick = function() {
+document.getElementById("send-button").onclick = async function() {
+    const formulario = document.getElementById("task-form");
+
+    if (!formulario.checkValidity()) {
+        formulario.reportValidity();
+        return;
+    }
+
     const tasks = obterTarefas();
     const dadosTarefa = obterDadosFormulario();
+    const emailDestino = document.getElementById("task-email").value.trim();
+
+    let tarefaCriada = null;
 
     if (idTarefaEditando === null) {
-        const task = {
+        tarefaCriada = {
             id: Date.now(),
             ...dadosTarefa
         };
 
-        tasks.push(task);
+        tasks.push(tarefaCriada);
     } else {
         const task = tasks.find(function(task) {
             return task.id === idTarefaEditando;
@@ -53,11 +64,21 @@ document.getElementById("send-button").onclick = function() {
 
     salvarTarefas(tasks);
     limparFormulario();
-
     mostrarTarefas();
 
     document.getElementById("send-button").textContent = "Adicionar tarefa";
+
+    if (tarefaCriada !== null) {
+        try {
+            await enviarEmailCriacaoTarefa(tarefaCriada, emailDestino);
+            console.log("E-mail de notificação enviado com sucesso.");
+        } catch (erro) {
+            console.error("Não foi possível enviar o e-mail de notificação:", erro);
+            alert("A tarefa foi salva, mas não foi possível enviar o e-mail de notificação.");
+        }
+    }
 };
+
 
 function criarElementoTarefa(task) {
     let botaoRemover = "";

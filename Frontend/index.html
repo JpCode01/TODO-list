@@ -31,6 +31,13 @@
             ></textarea>
 
             <input
+                type="email"
+                id="task-email"
+                placeholder="Digite seu e-mail para receber a notificação"
+                required
+            >
+
+            <input
                 type="date"
                 id="task-end-date"
                 required
@@ -85,6 +92,8 @@
 
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="email-service.js"></script>
     <script src="scripts.js"></script>
 </body>
 </html>
