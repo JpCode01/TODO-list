@@ -15,7 +15,7 @@ public class ValidationAlarme {
                 }
                 return dias;
             } catch (NumberFormatException e) {
-                System.out.println("Prioridade inválida! Digite um número inteiro.");
+                System.out.println("Dias inválidos! Digite um número inteiro.");
                 inputDias = scanner.nextLine();
             }
         }

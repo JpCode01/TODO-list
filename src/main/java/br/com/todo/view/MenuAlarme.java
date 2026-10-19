@@ -17,19 +17,21 @@ public class MenuAlarme {
     private final AlarmeController alarmeController;
     private final TarefaController tarefaController;
     private final ValidationAlarme validationAlarme;
+    private final EntradaConsole entradaConsole;
 
-    public MenuAlarme(Scanner scanner, AlarmeController alarmeController, TarefaController tarefaController, ValidationAlarme validationAlarme) {
+    public MenuAlarme(Scanner scanner, AlarmeController alarmeController, TarefaController tarefaController, ValidationAlarme validationAlarme, EntradaConsole entradaConsole) {
         this.scanner = scanner;
         this.alarmeController = alarmeController;
         this.tarefaController = tarefaController;
         this.validationAlarme = validationAlarme;
+        this.entradaConsole = entradaConsole;
     }
 
     public void escolherTarefaParaAlarme(List<TarefaViewDTO> tarefas) {
         System.out.println(tarefas);
         try {
             verificaSeHaTarefasDisponiveis(tarefas);
-            Long idTarefaProcurada = solicitarId("Digite o ID da tarefa: ");
+            Long idTarefaProcurada = entradaConsole.solicitarId("Digite o ID da tarefa: ");
             tarefaController.buscarTarefaPorId(idTarefaProcurada);
 
             capturarDadosAlarme(idTarefaProcurada);
@@ -57,17 +59,5 @@ public class MenuAlarme {
 
     private void criarAlarme(Alarme alarme) throws SQLException {
         alarmeController.criarAlarme(alarme);
-    }
-
-    private Long solicitarId(String mensagem) {
-        while (true) {
-            System.out.println(mensagem);
-            String idEscolhido = scanner.nextLine();
-            try {
-                return Long.parseLong(idEscolhido);
-            } catch (NumberFormatException e) {
-                System.out.println("Erro, digite um ID númerico!");
-            }
-        }
     }
 }
