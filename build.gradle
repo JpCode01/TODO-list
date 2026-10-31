@@ -19,6 +19,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.42'
     annotationProcessor 'org.projectlombok:lombok:1.18.42'
 
+    testImplementation 'org.spockframework:spock-core:2.4-M1'
+    testImplementation 'org.codehaus.groovy:groovy:3.0.19'
+
     testCompileOnly 'org.projectlombok:lombok:1.18.42'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
  }

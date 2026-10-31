@@ -2,7 +2,7 @@
 
 ## Tarefas (2-8, ordenadas)
 
-1. Configurar Spock/Groovy no Gradle (incerteza: versão compatível com 9.3.0).
+1. Configurar Spock/Groovy no Gradle (incerteza: versão compatível com 9.3.0). OK 
 2. Testes TarefaService com mocks.
 3. Testes StatusService.
 4. Testes AlarmeService.
