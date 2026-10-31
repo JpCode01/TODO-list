@@ -1,0 +1,12 @@
+# docs/plano.md
+
+## Tarefas (2-8, ordenadas)
+
+1. Configurar Spock/Groovy no Gradle (incerteza: versão compatível com 9.3.0).
+2. Testes TarefaService com mocks.
+3. Testes StatusService.
+4. Testes AlarmeService.
+5. Executar suíte.
+6. Documentar resultados.
+
+Cada tarefa: objetivo, arquivos, validação, critério de conclusão. Nenhuma tarefa marcada como concluída.
