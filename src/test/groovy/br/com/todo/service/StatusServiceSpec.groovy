@@ -42,5 +42,6 @@ class StatusServiceSpec extends Specification {
 
         expect:
         service.listarStatus().size() == 1
+        service.listarStatus()[0].nome == "Pendente"
     }
 }

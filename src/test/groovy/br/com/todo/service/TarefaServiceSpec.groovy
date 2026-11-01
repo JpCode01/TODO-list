@@ -68,6 +68,38 @@ class TarefaServiceSpec extends Specification {
         1 * tarefaRepo.remover(1L)
     }
 
+    def "listarTarefas retorna lista"() {
+        given:
+        tarefaRepo.listarTarefas() >> []
+
+        expect:
+        service.listarTarefas() != null
+    }
+
+    def "listarTarefasAFazer retorna lista"() {
+        given:
+        tarefaRepo.listarTarefasAFazer() >> []
+
+        expect:
+        service.listarTarefasAFazer() != null
+    }
+
+    def "listarTarefasFazendo retorna lista"() {
+        given:
+        tarefaRepo.listarTarefasFazendo() >> []
+
+        expect:
+        service.listarTarefasFazendo() != null
+    }
+
+    def "listarTarefasFeitas retorna lista"() {
+        given:
+        tarefaRepo.listarTarefasFeitas() >> []
+
+        expect:
+        service.listarTarefasFeitas() != null
+    }
+
     def "atualizarTarefa com status valido atualiza"() {
         given:
         def dto = new AtualizarTarefaDTO(1L, "n", "d", java.sql.Date.valueOf("2025-12-31"), 1, "c", "Pendente")

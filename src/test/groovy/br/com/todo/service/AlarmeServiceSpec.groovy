@@ -60,6 +60,40 @@ class AlarmeServiceSpec extends Specification {
         thrown(AlarmeDesativadoException)
     }
 
+    def "atualizarAlarme inexistente lanca AlarmeNaoEncontradoException"() {
+        given:
+        def alarme = new Alarme(1L, true, 5, 1L)
+        alarmeRepo.buscarPorId(1L) >> java.util.Optional.empty()
+
+        when:
+        service.atualizarAlarme(alarme)
+
+        then:
+        thrown(AlarmeNaoEncontradoException)
+    }
+
+    def "desativarAlarme inexistente lanca AlarmeNaoEncontradoException"() {
+        given:
+        alarmeRepo.buscarPorId(99L) >> java.util.Optional.empty()
+
+        when:
+        service.desativarAlarme(99L)
+
+        then:
+        thrown(AlarmeNaoEncontradoException)
+    }
+
+    def "ativarAlarme inexistente lanca AlarmeNaoEncontradoException"() {
+        given:
+        alarmeRepo.buscarPorId(99L) >> java.util.Optional.empty()
+
+        when:
+        service.ativarAlarme(99L)
+
+        then:
+        thrown(AlarmeNaoEncontradoException)
+    }
+
     def "desativarAlarme existente desativa"() {
         given:
         alarmeRepo.buscarPorId(1L) >> java.util.Optional.of(new Alarme(1L, true, 5, 1L))
