@@ -4,7 +4,7 @@
 
 1. Configurar Spock/Groovy no Gradle (incerteza: versão compatível com 9.3.0). OK 
 2. Testes TarefaService com mocks. OK
-3. Testes StatusService.
+3. Testes StatusService. OK 
 4. Testes AlarmeService.
 5. Executar suíte.
 6. Documentar resultados.
