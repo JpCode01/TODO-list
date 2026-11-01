@@ -7,6 +7,6 @@
 3. Testes StatusService. OK 
 4. Testes AlarmeService. OK
 5. Executar suíte. OK
-6. Documentar resultados.
+6. Documentar resultados. OK
 
 Cada tarefa: objetivo, arquivos, validação, critério de conclusão. Nenhuma tarefa marcada como concluída.
